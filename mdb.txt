@@ -1,0 +1,79 @@
+MongoDB Connection:
+
+Uses mongoose.connect() with your connection string
+
+Handles success/error with promises
+
+Schema Validation:
+
+required: true enforces mandatory fields
+
+unique: true prevents duplicate emails
+
+RESTful Endpoints:
+
+GET /api/users: Retrieves all users
+
+POST /api/users: Creates new user
+
+Error Handling:
+
+400 Bad Request for validation errors
+
+500 Internal Server Error for database issues
+
+
+
+
+
+
+
+Key Differences Explained
+Feature             	express.json()	              express.urlencoded()
+Content-Type	        application/json	          application/x-www-form-urlencoded
+Data Format	            Raw JSON	                  Form field key-value pairs
+Typical Use         	APIs	                      HTML form submissions
+Postman Body Section	Raw -> JSON	                  x-www-form-urlencoded
+
+
+
+MongoDB commands in cmd 
+
+> use mydb                  # Switch to your database  
+> db.users.insert({ ... })  # Insert data  
+> show collections          # Verify collections  
+> db.users.find()           # View inserted data  
+
+
+CRUD ENDPOINTS TO FETCH FROM MONGODB
+
+// GET all users (from MongoDB)
+app.get('/api/users', async (req, res) => {
+  try {
+    const allDbUsers = await User.find({}); // Fetch all users from MongoDB
+    res.status(200).json(allDbUsers);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+});
+
+// POST new user (to MongoDB)
+app.post('/api/users', async (req, res) => {
+  try {
+    const newUser = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      jobTitle: req.body.jobTitle,
+      gender: req.body.gender
+    });
+    
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (err) {
+    res.status(400).json({ 
+      error: err.message,
+      validationErrors: err.errors // Shows validation failures
+    });
+  }
+});

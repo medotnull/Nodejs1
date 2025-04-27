@@ -24,7 +24,7 @@ Error Handling:
 
 
 
-
+-------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -35,7 +35,7 @@ Data Format	            Raw JSON	                  Form field key-value pairs
 Typical Use         	APIs	                      HTML form submissions
 Postman Body Section	Raw -> JSON	                  x-www-form-urlencoded
 
-
+------------------------------------------------------------------------------------------------------------------------------
 
 MongoDB commands in cmd 
 
@@ -44,6 +44,8 @@ MongoDB commands in cmd
 > show collections          # Verify collections  
 > db.users.find()           # View inserted data  
 
+
+------------------------------------------------------------------------------------------------------------------------------
 
 CRUD ENDPOINTS TO FETCH FROM MONGODB
 
@@ -77,3 +79,47 @@ app.post('/api/users', async (req, res) => {
     });
   }
 });
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+WORKING FLOW OF WHEN USER REQUEST SOMETHING LIKE GET ME MY ALL THE ORDERS.
+
+1. Client (User) → Routes
+User kuch mangta hai (GET, POST, PUT, DELETE request). Jaise:
+
+"Bhaisahab, /api/users par mere profile ka data chahiye (GET)"
+
+Route uss request ko sunta hai aur decide karta hai: "Ye kaam kaun sa controller handle karega?"
+
+2. Routes → Controllers
+Route, controller ke specific function ko call karta hai. Example:
+
+"Hey UsersController, user ne profile maanga hai, tumhara getUser() function chalao!"
+
+Controller banega request ka gatekeeper: "Sahi data hai? Permission hai? Kya chahiye user ko?"
+
+3. Controllers → Models
+Controller ko data chahiye ya save karna hai, toh Model ko bulaata hai. Jaise:
+
+*"UserModel, mere liye user_id=5 ka data database se leke aao!"*
+
+Model business logic samhalta hai, jaise: validations, calculations, etc.
+
+4. Models → Database
+Model directly database se baat karta hai (SQL/NoSQL queries). Example:
+
+"Hey Database, SELECT * FROM users WHERE id=5 chalao aur result bhejo!"
+
+Model ka kaam hai: CRUD operations (Create, Read, Update, Delete).
+
+5. Database → Models → Controllers → Routes → Client
+Database se data milte hi, wapas chain follow hoti hai:
+
+Database → Model: "Lo data, 5th user ka naam 'Raju' hai."
+
+Model → Controller: "Data process kiya, ab ye final JSON lo."
+
+Controller → Route: "Bhaiya, response taiyar hai, 200 status code ke saath bhejo."
+
+Route → Client: "Arre user, tera profile data aa gaya! 🚀"

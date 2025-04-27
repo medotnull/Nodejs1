@@ -1,5 +1,7 @@
 const User = require("../models/user");
 
+
+//controllers are these making manipulation on model that is just one => User 
 async function handleGetAllUsers(req, res) {
     const allDbUsers = await User.find({});
     return res.json(allDbUsers)
